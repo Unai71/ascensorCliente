@@ -1,0 +1,154 @@
+/* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* Contenedor principal del ascensor */
+#ascensor-container {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Estilos para indicadores */
+#indicadores {
+    margin-bottom: 20px;
+}
+
+#indicadores span {
+    display: block;
+    margin: 10px 0;
+}
+
+/* Estilos para las luces */
+#luces {
+    display: flex;
+    justify-content: center;
+}
+
+.luz {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+.luz-activa {
+    opacity: 1;
+}
+
+.luz-inactiva {
+    opacity: 0.4;
+}
+
+#luz-verde { background-color: green; }
+#luz-naranja { background-color: orange; }
+#luz-roja { background-color: red; }
+#luz-gris { background-color: grey; }
+
+/* Estilos para el ascensor y sus puertas */
+#ascensor {
+    border: 2px solid #333;
+    background-color: #777;
+    height: 200px;
+    width: 100px;
+    margin: auto;
+    position: relative;
+    overflow: hidden; /* Esconde las puertas cuando se "abren" */
+}
+
+.puerta {
+    background-color: #333;
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    transition: transform 0.5s ease; /* Animación para abrir/cerrar */
+}
+
+.puerta.izquierda { left: 0; }
+.puerta.derecha { right: 0; }
+
+/* Botones de piso */
+#controles {
+    margin-top: 20px;
+}
+
+.boton-piso {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.boton-piso:hover {
+    background-color: #555;
+}
+
+/* Formulario para añadir paquetes */
+#formulario-paquete {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+}
+
+#formulario-paquete h3 {
+    margin-top: 0;
+}
+
+#formulario-paquete form {
+    display: flex;
+    flex-direction: column;
+}
+
+#formulario-paquete input, #formulario-paquete select, #formulario-paquete button {
+    margin: 10px 0;
+    padding: 10px;
+}
+
+/* Estilos responsivos para dispositivos móviles */
+@media (max-width: 768px) {
+    #ascensor-container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    #ascensor {
+        height: 150px;
+        width: 80px;
+    }
+
+    .puerta {
+        transition: transform 0.5s ease;
+    }
+}
+
+#controles-externos {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+}
+
+.boton-llamada {
+    margin: 8px;
+    padding: 10px 20px;
+    background-color: #f4f4f4;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+.boton-llamada:hover {
+    background-color: #e9e9e9;
+}
+
