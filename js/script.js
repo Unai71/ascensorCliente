@@ -31,6 +31,21 @@ document.addEventListener('DOMContentLoaded', () => {
             descargarPaquete(pisoActual);
         });
     });
+    document.querySelectorAll('.boton-llamada').forEach(boton => {
+        boton.addEventListener('click', async function () {
+            const pisoDestino = parseInt(this.dataset.piso); // Usamos dataset para acceder al atributo data-piso
+            //console.log(`Moviendo al piso ${pisoDestino}`);
+            controlAscensor.añadirDestino(pisoDestino); // Asegúrate de que este método esté correctamente definido en ControlAscensor
+            // Nota: Puede que necesites invocar aquí un método para procesar el movimiento o ajustar la cola de destinos según tu lógica específica.
+            await esperarCondicion(() => ascensor.estadoPuertas === "abiertas");
+            console.log("Cerrando puertas...");
+            ascensor.estadoPuertas = "cerradas";
+            actualizarEstadoAscensor();
+            moverAscensor(pisoDestino);
+            const pisoActual = pisoDestino;
+            descargarPaquete(pisoActual);
+        });
+    });
 
     function manejarAgregarPaquete(event) {
         event.preventDefault();
