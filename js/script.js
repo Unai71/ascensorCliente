@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         listaPaquetes.appendChild(elementoPaquete);
 
         event.target.reset();
+        mostrarPaquetesPB();
         actualizarEstadoAscensor();
 
     }
@@ -193,18 +194,23 @@ document.addEventListener('DOMContentLoaded', () => {
             intentar();
         });
     }
-    /* 
-        function actualizarContenido()
-        {
-            // Actualizar la lista de paquetes pendientes
-            document.getElementById('paquetes-pendientes').
-        
-            // Actualizar la carga actual dentro del ascensor
-            document.getElementById('carga-actual').textContent = `Carga Actual: ${ascensor.cargaActual} kg`;
-        
-            // Actualizar el estado de las puertas del ascensor
-            const estadoPuertasTexto = ascensor.estadoPuertas === "abiertas" ? "Abiertas" : "Cerradas";
-            document.getElementById('estado-puertas').textContent = `Estado de las Puertas: ${estadoPuertasTexto}`;
-        } */
+    function mostrarPaquetesPB() {
+        const packetContainer = document.querySelector(".packet-container");
+
+        packetContainer.innerHTML = "";
+        const paquetesParaCargar = document.querySelectorAll('#paquetes-pendientes > li[id^="paquete-destino"]');
+        paquetesParaCargar.forEach(paquete => {
+            const alturaPaquete = parseFloat(paquete.getAttribute('data-alto'));
+            const anchoPaquete = parseFloat(paquete.getAttribute('data-ancho'));
+
+            const packet = document.createElement("div");
+            packet.className = "packet";
+            packet.innerHTML = '<div class="decoracion-packet"></div>';
+            //packet.style.width = width;
+            //card.style.height = height;
+            packetContainer.appendChild(packet);
+
+        });
+    }
     // Implementaciones adicionales según sea necesario...
 });
