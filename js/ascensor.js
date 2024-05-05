@@ -4,7 +4,12 @@ class Ascensor {
         this.pisosTotales = 4;
         this.estadoPuertas = "abiertas"; // Puede ser "abiertas" o "cerradas".
         this.cargaMaxima = 5000;
+        this.anchoMaximo = 250;
+        this.altoMaximo = 200;
         this.cargaActual = 0;
+        this.anchoActual = 0;
+        this.altoActual = 0;
+
         this.destinos = []; // Cola de destinos.
     }
 

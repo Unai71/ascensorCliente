@@ -79,7 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         paquetesParaDescargar.forEach(paquete => {
             const pesoPaquete = parseFloat(paquete.getAttribute('data-peso'));
-            ascensor.cargaActual -= pesoPaquete; // Actualiza el peso total en el ascensor
+            ascensor.cargaActual -= pesoPaquete;
+            const anchoPaquete = parseFloat(paquete.getAttribute('data-ancho'));
+            ascensor.anchoActual -= anchoPaquete;
+            const altoPaquete = parseFloat(paquete.getAttribute('data-alto'));
+            ascensor.altoActual -= altoPaquete; // Actualiza el peso total en el ascensor
             paquete.remove(); // Elimina el elemento del DOM
         });
 
@@ -93,8 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const pesoPaquete = parseFloat(paquete.getAttribute('data-peso'));
             const alturaPaquete = parseFloat(paquete.getAttribute('data-alto'));
             const anchoPaquete = parseFloat(paquete.getAttribute('data-ancho'));
-            if (ascensor.cargaActual + pesoPaquete <= ascensor.cargaMaxima) {
+            if (ascensor.cargaActual + pesoPaquete <= ascensor.cargaMaxima && ascensor.anchoActual + anchoPaquete <= ascensor.anchoMaximo && ascensor.altoActual + alturaPaquete <= ascensor.altoMaximo) {
                 ascensor.cargaActual += pesoPaquete;
+                ascensor.altoActual += alturaPaquete;
+                ascensor.anchoActual += anchoPaquete;
                 const elementoPaquete = paquete.cloneNode(true);
                 listaPaquetes.appendChild(elementoPaquete);
                 paquete.remove();
