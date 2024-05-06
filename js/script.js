@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ascensor = new Ascensor();
     const controlAscensor = new ControlAscensor(ascensor);
     const edificio = new Edificio(ascensor);
-
+    var numPaquetesPB = 0;
+    var numPaquetesAscensor = 0;
     // Actualiza la UI para reflejar el estado inicial del ascensor
     actualizarEstadoAscensor();
 
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         listaPaquetes.appendChild(elementoPaquete);
 
         event.target.reset();
+        mostrarPaquetesPB();
         actualizarEstadoAscensor();
 
     }
@@ -103,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const elementoPaquete = paquete.cloneNode(true);
                 listaPaquetes.appendChild(elementoPaquete);
                 paquete.remove();
+                borrarPaquetePB();
             }
         });
     }
@@ -202,18 +205,37 @@ document.addEventListener('DOMContentLoaded', () => {
             intentar();
         });
     }
-    /* 
-        function actualizarContenido()
-        {
-            // Actualizar la lista de paquetes pendientes
-            document.getElementById('paquetes-pendientes').
-        
-            // Actualizar la carga actual dentro del ascensor
-            document.getElementById('carga-actual').textContent = `Carga Actual: ${ascensor.cargaActual} kg`;
-        
-            // Actualizar el estado de las puertas del ascensor
-            const estadoPuertasTexto = ascensor.estadoPuertas === "abiertas" ? "Abiertas" : "Cerradas";
-            document.getElementById('estado-puertas').textContent = `Estado de las Puertas: ${estadoPuertasTexto}`;
-        } */
+    function mostrarPaquetesPB() {
+        const packetContainer = document.getElementById("packet-container");
+
+        packetContainer.innerHTML = "";
+        const paquetesParaCargar = document.querySelectorAll('#paquetes-pendientes > li[id^="paquete-destino"]');
+        paquetesParaCargar.forEach(paquete => {
+            const alturaPaquete = parseFloat(paquete.getAttribute('data-alto'));
+            const anchoPaquete = parseFloat(paquete.getAttribute('data-ancho'));
+
+            const packet = document.createElement("div");
+            packet.className = "packet";
+            numPaquetesPB += 1;
+            packet.id = `packet-${numPaquetesPB}`;
+            packet.innerHTML = '<div class="decoracion-packet"></div>';
+            //packet.style.width = width;
+            //card.style.height = height;
+            packetContainer.appendChild(packet);
+
+        });
+    }
+    
+    function borrarPaquetePB() {
+        const packetContainer = document.querySelectorAll("#packet-container > li[id^=packet-]");
+        console.log(`numero de paquetes en planta baja: ${numPaquetesPB}`);
+        packetContainer.forEach(packet => {
+            console.log(packet.id);
+            if (packet.id = `packet-${numPaquetesPB}`) {
+                packet.remove();
+                numPaquetesPB -= 1;
+            }
+        });
+    }
     // Implementaciones adicionales según sea necesario...
 });
