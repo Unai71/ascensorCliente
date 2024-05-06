@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const destino = parseInt(document.getElementById('destino').value);
 
         const paquete = new Paquete(peso, { ancho, alto }, destino);
-        ascensor.cargar(paquete); // Asegúrate de que esta función actualiza el peso total en el ascensor.
 
         const listaPaquetes = document.getElementById('paquetes-pendientes');
         const elementoPaquete = document.createElement('li');
@@ -110,6 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function actualizarEstadoAscensor() {
+
+        if (ascensor.pisoActual === 0) {
+            console.log("Cargando paquetes en planta baja");
+            cargarPaquetes();
+        }
         // Actualizar el piso actual del ascensor
         document.getElementById('piso-actual').textContent = `Piso Actual: ${ascensor.pisoActual}`;
 
@@ -126,12 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
             luz.classList.add('luz-inactiva');
             luz.classList.remove('luz-activa');
         });
+        
 
 
-        if (ascensor.pisoActual === 0) {
-            console.log("Cargando paquetes en planta baja");
-            cargarPaquetes();
-        }
+
+
 
         // Ejemplo de cómo podrías usar las luces para indicar el estado
         if (ascensor.pisoActual === ascensor.destinoActual) {
