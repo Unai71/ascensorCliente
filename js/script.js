@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ascensor = new Ascensor();
     const controlAscensor = new ControlAscensor(ascensor);
     const edificio = new Edificio(ascensor);
-
+    var numPaquetesPB = 0;
+    var numPaquetesAscensor = 0;
     // Actualiza la UI para reflejar el estado inicial del ascensor
     actualizarEstadoAscensor();
 
@@ -99,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const elementoPaquete = paquete.cloneNode(true);
                 listaPaquetes.appendChild(elementoPaquete);
                 paquete.remove();
+                borrarPaquetePB();
             }
         });
     }
@@ -195,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     function mostrarPaquetesPB() {
-        const packetContainer = document.querySelector(".packet-container");
+        const packetContainer = document.getElementById("packet-container");
 
         packetContainer.innerHTML = "";
         const paquetesParaCargar = document.querySelectorAll('#paquetes-pendientes > li[id^="paquete-destino"]');
@@ -205,11 +207,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const packet = document.createElement("div");
             packet.className = "packet";
+            numPaquetesPB += 1;
+            packet.id = `packet-${numPaquetesPB}`;
             packet.innerHTML = '<div class="decoracion-packet"></div>';
             //packet.style.width = width;
             //card.style.height = height;
             packetContainer.appendChild(packet);
 
+        });
+    }
+    
+    function borrarPaquetePB() {
+        const packetContainer = document.querySelectorAll("#packet-container > li[id^=packet-]");
+        console.log(`numero de paquetes en planta baja: ${numPaquetesPB}`);
+        packetContainer.forEach(packet => {
+            console.log(packet.id);
+            if (packet.id = `packet-${numPaquetesPB}`) {
+                packet.remove();
+                numPaquetesPB -= 1;
+            }
         });
     }
     // Implementaciones adicionales según sea necesario...
