@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const edificio = new Edificio(ascensor);
     var numPaquetesPB = 0;
     var numPaquetesAscensor = 0;
+    let procesando = false;
+
     actualizarEstadoAscensor();
 
 
@@ -190,8 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }*/
 
     async function procesarMovimiento() {
+        if (procesando) return;  // Asegurar que no se procese simultáneamente
+        procesando = true;
         while (ascensor.destinos.length > 0) {
-            if (ascensor.espera === 1){
                 ascensor.espera = 0;
                 const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
         
@@ -213,13 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
                 descargarPaquete(ascensor.pisoActual); // Descargar paquetes, si hay alguno para este piso
                 actualizarEstadoAscensor(); // Actualiza la interfaz de usuario nuevamente
-                ascensor.espera =1;
+                ascensor.espera = 1;
                 // Esperar un breve momento antes de moverse al siguiente destino si hay más en la cola
-                if (ascensor.destinos.length > 0) {
+                /*if (ascensor.destinos.length > 0) {
                     await delay(1000); // Dar tiempo para procesos internos antes del próximo movimiento
-                }
-            }
+                }*/
         }
+        procesando = false;
     }
     
     function delay(time) {
