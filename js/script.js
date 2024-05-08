@@ -13,10 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     actualizarEstadoAscensor();
 
-
+    // Eventos Botones
     document.getElementById('añadir-paquete-form').addEventListener('submit', manejarAgregarPaquete);
 
-    // Eventos Botones
     document.querySelectorAll('.boton-piso').forEach(boton => {
         boton.addEventListener('click', async function () {
             const pisoDestino = parseInt(this.dataset.piso);
@@ -28,20 +27,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.querySelectorAll('.boton-llamada').forEach(boton => {
         boton.addEventListener('click', async function () {
-            const pisoDestino = parseInt(this.dataset.piso); // Usamos dataset para acceder al atributo data-piso
-            //console.log(`Moviendo al piso ${pisoDestino}`);
-            controlAscensor.añadirDestino(pisoDestino); // Asegúrate de que este método esté correctamente definido en ControlAscensor
-            // Nota: Puede que necesites invocar aquí un método para procesar el movimiento o ajustar la cola de destinos según tu lógica específica.
-            await esperarCondicion(() => ascensor.estadoPuertas === "abiertas");
-            console.log("Cerrando puertas...");
-            ascensor.estadoPuertas = "cerradas";
-            actualizarEstadoAscensor();
+            const pisoDestino = parseInt(this.dataset.piso); //
             moverAscensor(pisoDestino);
-            const pisoActual = pisoDestino;
-            descargarPaquete(pisoActual);
+            if (ascensor.destinos.length >0){
+                procesarMovimiento();
+            }
         });
     });
 
+    document.getElementById('mostrarModalPaquetes').addEventListener('click', function() {
+        if (ascensor.pisoActual === 0){ 
+        let interfaz = document.getElementById('modalPaquetes');
+        let listaAdministrarPaquetes = document.getElementById('listaModalPaquetes');
+        listaAdministrarPaquetes.innerHTML = '';
+        const paquetes = document.querySelectorAll('#paquetes-pendientes li, #lista-paquetes li');
+
+        paquetes.forEach(paquete => {
+            const li = document.createElement('li');
+            li.textContent = `ID: ${paquete.id}, Peso: ${paquete.dataset.peso}`;
+            listaModalPaquetes.appendChild(li);
+    
+            // Botón para eliminar paquete
+            const btnEliminar = document.createElement('button');
+            btnEliminar.textContent = 'Eliminar';
+            btnEliminar.onclick = function() {
+                paquete.remove();
+                li.remove(); 
+            };
+            li.appendChild(btnEliminar);
+        });
+        interfaz.style.display = 'block';
+        }else{
+            alert("Baja al piso 0 para administrar los paquetes.");
+        }
+    });
+    
+    document.querySelector('.close').onclick = function() {
+        document.getElementById('modalPaquetes').style.display = 'none';
+    };
+    document.getElementById('cerrarModal').onclick = function() {
+        document.getElementById('modalPaquetes').style.display = 'none';
+    };
+    
+    window.onclick = function(event) {
+        var modal = document.getElementById('modalPaquetes');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    };
 
     function manejarAgregarPaquete(event) {
         event.preventDefault();
@@ -51,21 +84,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const dimensionesInput = document.getElementById('dimensiones').value;
         const [ancho, alto] = dimensionesInput.split('x').map(Number);
         const destino = parseInt(document.getElementById('destino').value);
+        if (ancho >= 10 || alto >= 10 ){
+            const paquete = new Paquete(peso, { ancho, alto }, destino);
 
-        const paquete = new Paquete(peso, { ancho, alto }, destino);
-
-        const listaPaquetes = document.getElementById('paquetes-pendientes');
-        const elementoPaquete = document.createElement('li');
-        elementoPaquete.id = `paquete-destino-${destino}-${Date.now()}`;
-        elementoPaquete.setAttribute('data-peso', peso);
-        elementoPaquete.setAttribute('data-ancho', ancho);
-        elementoPaquete.setAttribute('data-alto', alto);
-        elementoPaquete.textContent = `Peso: ${peso} kg, Dimensiones: ${ancho}x${alto} cm, Destino: Piso ${destino}`;
-        listaPaquetes.appendChild(elementoPaquete);
-
-        event.target.reset();
-        mostrarPaquetesPB();
-        actualizarEstadoAscensor();
+            const listaPaquetes = document.getElementById('paquetes-pendientes');
+            const elementoPaquete = document.createElement('li');
+            elementoPaquete.id = `paquete-destino-${destino}-${Date.now()}`;
+            elementoPaquete.setAttribute('data-peso', peso);
+            elementoPaquete.setAttribute('data-ancho', ancho);
+            elementoPaquete.setAttribute('data-alto', alto);
+            elementoPaquete.textContent = `Peso: ${peso} kg, Dimensiones: ${ancho}x${alto} cm, Destino: Piso ${destino}`;
+            listaPaquetes.appendChild(elementoPaquete);
+    
+            event.target.reset();
+            mostrarPaquetesPB();
+            actualizarEstadoAscensor();
+        }else{
+            alert("Las dimensiones mínimas del paquete son de 10x10 cm.")
+        }
 
     }
 
@@ -169,28 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /*function procesarMovimiento() {
-        const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
-
-        // Simular el movimiento del ascensor con un retraso
-        console.log("Cerrando puertas...");
-        ascensor.estadoPuertas = "cerradas";
-        console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
-        actualizarEstadoAscensor();
-
-        setTimeout(async () => {
-            ascensor.pisoActual = siguientePiso;
-            console.log('Abriendo puertas...');
-            ascensor.estadoPuertas = "abiertas"; // Supongamos que las puertas se abren automáticamente al llegar
-            console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
-            actualizarEstadoAscensor();
-            sleep(4000);
-            descargarPaquete(ascensor.pisoActual);
-            actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
-        }, 1000 * Math.abs(ascensor.pisoActual - siguientePiso)) // Simula el tiempo que toma moverse entre pisos
-        
-    }*/
-
     async function procesarMovimiento() {
         if (procesando) return;  // Asegurar que no se procese simultáneamente
         procesando = true;
@@ -217,10 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 descargarPaquete(ascensor.pisoActual); // Descargar paquetes, si hay alguno para este piso
                 actualizarEstadoAscensor(); // Actualiza la interfaz de usuario nuevamente
                 ascensor.espera = 1;
-                // Esperar un breve momento antes de moverse al siguiente destino si hay más en la cola
-                /*if (ascensor.destinos.length > 0) {
-                    await delay(1000); // Dar tiempo para procesos internos antes del próximo movimiento
-                }*/
         }
         procesando = false;
     }

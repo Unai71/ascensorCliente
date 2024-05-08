@@ -42,12 +42,20 @@
             <button class="boton-llamada" data-piso="2">Llamar desde P2</button>
             <button class="boton-llamada" data-piso="3">Llamar desde P3</button>
         </div>
-        
+        <button id="mostrarModalPaquetes">Administrar Paquetes</button>
+        <div id="modalPaquetes" style="display:none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Paquetes</h2>
+                <ul id="listaModalPaquetes"></ul>
+                <button id="cerrarModal">Cerrar</button>
+            </div>
+        </div>
         <div id="formulario-paquete">
             <h3>Añadir Paquete</h3>
             <form id="añadir-paquete-form">
                 <label for="peso">Peso (kg):</label>
-                <input type="number" id="peso" name="peso" required>
+                <input type="number" id="peso" name="peso" step="0.1" min="0" placeholder="Introduce el peso" required>
                 
                 <label for="dimensiones">Dimensiones (cm):</label>
                 <input type="text" id="dimensiones" name="dimensiones" placeholder="Ancho x Alto" required>
