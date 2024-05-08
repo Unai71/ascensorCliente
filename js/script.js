@@ -9,27 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const edificio = new Edificio(ascensor);
     var numPaquetesPB = 0;
     var numPaquetesAscensor = 0;
-    // Actualiza la UI para reflejar el estado inicial del ascensor
+    let procesando = false;
+
     actualizarEstadoAscensor();
 
-    // Agregar evento al formulario para añadir paquetes
 
     document.getElementById('añadir-paquete-form').addEventListener('submit', manejarAgregarPaquete);
 
-    // Agregar eventos a los botones de piso
+    // Eventos Botones
     document.querySelectorAll('.boton-piso').forEach(boton => {
         boton.addEventListener('click', async function () {
-            const pisoDestino = parseInt(this.dataset.piso); // Usamos dataset para acceder al atributo data-piso
-            //console.log(`Moviendo al piso ${pisoDestino}`);
-            controlAscensor.añadirDestino(pisoDestino); // Asegúrate de que este método esté correctamente definido en ControlAscensor
-            // Nota: Puede que necesites invocar aquí un método para procesar el movimiento o ajustar la cola de destinos según tu lógica específica.
-            await esperarCondicion(() => ascensor.estadoPuertas === "abiertas");
-            console.log("Cerrando puertas...");
-            ascensor.estadoPuertas = "cerradas";
-            actualizarEstadoAscensor();
+            const pisoDestino = parseInt(this.dataset.piso);
             moverAscensor(pisoDestino);
-            const pisoActual = pisoDestino;
-            descargarPaquete(pisoActual);
+            if (ascensor.destinos.length >0){
+                procesarMovimiento();
+            }
         });
     });
     document.querySelectorAll('.boton-llamada').forEach(boton => {
@@ -47,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             descargarPaquete(pisoActual);
         });
     });
+
 
     function manejarAgregarPaquete(event) {
         event.preventDefault();
@@ -84,8 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const anchoPaquete = parseFloat(paquete.getAttribute('data-ancho'));
             ascensor.anchoActual -= anchoPaquete;
             const altoPaquete = parseFloat(paquete.getAttribute('data-alto'));
-            ascensor.altoActual -= altoPaquete; // Actualiza el peso total en el ascensor
-            paquete.remove(); // Elimina el elemento del DOM
+            ascensor.altoActual -= altoPaquete;
+            paquete.remove();
         });
 
         console.log(`Paquetes descargados en el piso ${pisoActual}. Peso actual del ascensor actualizado.`);
@@ -152,40 +147,89 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function moverAscensor(pisoDestino) {
-        // Primero, verifica si el piso destino es válido y diferente del piso actual
         if (pisoDestino >= 0 && pisoDestino < ascensor.pisosTotales && pisoDestino !== ascensor.pisoActual) {
             console.log(`Añadiendo piso ${pisoDestino} a la cola de destinos.`);
 
-            // Añadir el piso destino a la cola si aún no está en ella
             if (!ascensor.destinos.includes(pisoDestino)) {
                 ascensor.destinos.push(pisoDestino);
             }
 
             // Intentar mover el ascensor si las puertas están cerradas y no está ya en movimiento hacia otro piso
-            if (ascensor.estadoPuertas === "cerradas" && ascensor.destinos.length === 1) {
-                // Aquí podrías implementar una lógica más sofisticada para determinar cuál destino procesar primero
-                procesarMovimiento();
-            }
+
+
+
+
+
+
+
+
+            
         } else {
             console.log("Piso destino inválido o ya en el piso destino.");
         }
     }
 
-    function procesarMovimiento() {
-        if (ascensor.destinos.length > 0) {
-            const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
-            console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
+    /*function procesarMovimiento() {
+        const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
 
-            // Simular el movimiento del ascensor con un retraso
-            setTimeout(async () => {
+        // Simular el movimiento del ascensor con un retraso
+        console.log("Cerrando puertas...");
+        ascensor.estadoPuertas = "cerradas";
+        console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
+        actualizarEstadoAscensor();
+
+        setTimeout(async () => {
+            ascensor.pisoActual = siguientePiso;
+            console.log('Abriendo puertas...');
+            ascensor.estadoPuertas = "abiertas"; // Supongamos que las puertas se abren automáticamente al llegar
+            console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
+            actualizarEstadoAscensor();
+            sleep(4000);
+            descargarPaquete(ascensor.pisoActual);
+            actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
+        }, 1000 * Math.abs(ascensor.pisoActual - siguientePiso)) // Simula el tiempo que toma moverse entre pisos
+        
+    }*/
+
+    async function procesarMovimiento() {
+        if (procesando) return;  // Asegurar que no se procese simultáneamente
+        procesando = true;
+        while (ascensor.destinos.length > 0) {
+                ascensor.espera = 0;
+                const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
+        
+                console.log("Cerrando puertas...");
+                ascensor.estadoPuertas = "cerradas";
+                actualizarEstadoAscensor(); 
+                console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
+        
+                // Esperar de manera asíncrona el tiempo necesario para moverse entre pisos
+                await new Promise(resolve => setTimeout(resolve, 3000 * Math.abs(ascensor.pisoActual - siguientePiso)));
+        
                 ascensor.pisoActual = siguientePiso;
                 console.log('Abriendo puertas...');
-                ascensor.estadoPuertas = "abiertas"; // Supongamos que las puertas se abren automáticamente al llegar
-                console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
+                ascensor.estadoPuertas = "abiertas";
                 actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
-            }, 1000 * Math.abs(ascensor.pisoActual - siguientePiso)) // Simula el tiempo que toma moverse entre pisos
+                console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
+        
+                await delay(4000); // Espera con las puertas abiertas
+        
+                descargarPaquete(ascensor.pisoActual); // Descargar paquetes, si hay alguno para este piso
+                actualizarEstadoAscensor(); // Actualiza la interfaz de usuario nuevamente
+                ascensor.espera = 1;
+                // Esperar un breve momento antes de moverse al siguiente destino si hay más en la cola
+                /*if (ascensor.destinos.length > 0) {
+                    await delay(1000); // Dar tiempo para procesos internos antes del próximo movimiento
+                }*/
         }
+        procesando = false;
     }
+    
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+    
+    
 
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
