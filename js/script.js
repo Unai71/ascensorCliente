@@ -191,30 +191,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function procesarMovimiento() {
         while (ascensor.destinos.length > 0) {
-            const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
-    
-            console.log("Cerrando puertas...");
-            ascensor.estadoPuertas = "cerradas";
-            actualizarEstadoAscensor(); 
-            console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
-    
-            // Esperar de manera asíncrona el tiempo necesario para moverse entre pisos
-            await new Promise(resolve => setTimeout(resolve, 3000 * Math.abs(ascensor.pisoActual - siguientePiso)));
-    
-            ascensor.pisoActual = siguientePiso;
-            console.log('Abriendo puertas...');
-            ascensor.estadoPuertas = "abiertas";
-            actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
-            console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
-    
-            await delay(4000); // Espera con las puertas abiertas
-    
-            descargarPaquete(ascensor.pisoActual); // Descargar paquetes, si hay alguno para este piso
-            actualizarEstadoAscensor(); // Actualiza la interfaz de usuario nuevamente
-    
-            // Esperar un breve momento antes de moverse al siguiente destino si hay más en la cola
-            if (ascensor.destinos.length > 0) {
-                await delay(1000); // Dar tiempo para procesos internos antes del próximo movimiento
+            if (ascensor.espera === 1){
+                ascensor.espera = 0;
+                const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
+        
+                console.log("Cerrando puertas...");
+                ascensor.estadoPuertas = "cerradas";
+                actualizarEstadoAscensor(); 
+                console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
+        
+                // Esperar de manera asíncrona el tiempo necesario para moverse entre pisos
+                await new Promise(resolve => setTimeout(resolve, 3000 * Math.abs(ascensor.pisoActual - siguientePiso)));
+        
+                ascensor.pisoActual = siguientePiso;
+                console.log('Abriendo puertas...');
+                ascensor.estadoPuertas = "abiertas";
+                actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
+                console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
+        
+                await delay(4000); // Espera con las puertas abiertas
+        
+                descargarPaquete(ascensor.pisoActual); // Descargar paquetes, si hay alguno para este piso
+                actualizarEstadoAscensor(); // Actualiza la interfaz de usuario nuevamente
+                ascensor.espera =1;
+                // Esperar un breve momento antes de moverse al siguiente destino si hay más en la cola
+                if (ascensor.destinos.length > 0) {
+                    await delay(1000); // Dar tiempo para procesos internos antes del próximo movimiento
+                }
             }
         }
     }
