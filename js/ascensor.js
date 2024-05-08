@@ -9,7 +9,6 @@ class Ascensor {
         this.cargaActual = 0;
         this.anchoActual = 0;
         this.altoActual = 0;
-        this.espera = 1;
         this.destinos = []; // Cola de destinos.
     }
 
