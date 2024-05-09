@@ -15,8 +15,16 @@ body, html {
 }
 .main-container{
     display:flex;
+    padding: 10px;
 }
-#packet-container, #ascensor-container{
+.control-container{
+    display:grid;
+    margin: auto;
+    width: 30%;
+    height: 100%;
+
+}
+#controles #ascensor-container{
     flex:1;
     padding: 20px;
 }
@@ -92,9 +100,9 @@ body, html {
 .marco-ascensor {
     border: 2px solid black;
     background-color: #888;
-    height: 420px;
-    width: 240px;
-    margin: auto;
+    height: 700px;
+    width: 350px;
+    margin:auto;
     position: relative;
     overflow: hidden;
 
@@ -121,7 +129,7 @@ body, html {
     background-position: 13px 0, 13px 0, 0 0, 0 0;
     background-size: 26px 26px;
     background-repeat: repeat;
-    top: 9%;
+    top: 10%;
     bottom: 0;
     height: 90%;
     width: 78%;
