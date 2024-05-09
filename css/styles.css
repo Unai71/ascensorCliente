@@ -129,19 +129,19 @@ html {
 .activo{
     background-color: yellow;
 }
-#indicator-floor-1 {
+#indicator-floor-0 {
     left: 32%;
 }
 
-#indicator-floor-2 {
+#indicator-floor-1 {
     left: 42%;
 }
 
-#indicator-floor-3 {
+#indicator-floor-2 {
     left: 52%;
 }
 
-#indicator-floor-4 {
+#indicator-floor-3 {
     left: 62%;
 }
 
