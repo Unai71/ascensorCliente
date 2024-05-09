@@ -4,6 +4,7 @@ import Edificio from './edificio.js';
 import Paquete from './paquete.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const ascensor_dom =document.querySelector('#ascensor');
     const ascensor = new Ascensor();
     const controlAscensor = new ControlAscensor(ascensor);
     const edificio = new Edificio(ascensor);
@@ -214,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
                 console.log("Cerrando puertas...");
                 ascensor.estadoPuertas = "cerradas";
+                cerrarPuertas();
                 actualizarEstadoAscensor(); 
                 console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
         
@@ -223,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ascensor.pisoActual = siguientePiso;
                 console.log('Abriendo puertas...');
                 ascensor.estadoPuertas = "abiertas";
+                abrirPuertas();
                 actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
                 console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
         
@@ -290,6 +293,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 numPaquetesPB -= 1;
             }
         });
+    }
+    function abrirPuertas(){
+        ascensor_dom.classList.remove('cerrado');
+        ascensor_dom.classList.add('abierto')
+    }
+    function cerrarPuertas(){
+        ascensor_dom.classList.remove('abierto');
+        ascensor_dom.classList.add('cerrado')
     }
     // Implementaciones adicionales según sea necesario...
 });
