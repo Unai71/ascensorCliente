@@ -1,5 +1,6 @@
 /* Estilos generales */
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
@@ -13,43 +14,51 @@ body, html {
     text-align: center;
     padding: 20px;
 }
-.main-container{
-    display:flex;
+
+.main-container {
+    display: flex;
 }
-#packet-container, #ascensor-container{
-    flex:1;
+
+#packet-container,
+#ascensor-container {
+    flex: 1;
     padding: 20px;
 }
 
-#packet-container{
+#packet-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(20px, 1fr)); /* Adjust as needed */
-    gap:5px;
+    grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+    /* Adjust as needed */
+    gap: 5px;
     padding: 10px;
+    width: 50%;
+    max-width: 600px;
     justify-content: right;
     align-items: right;
-    height: 200px;   
+    height: 200px;
 }
 
-.packet{
+.packet {
     position: relative;
     width: 10vmin;
     height: 20vmin;
     background-color: rgb(107, 88, 62);
     border-radius: 5px;
-    box-shadow: 0 4px px rgba(0,0,0,0.2);
-    display:flex;
+    box-shadow: 0 4px px rgba(0, 0, 0, 0.2);
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
-.decoracion-packet{
-    height:35%;
-    width:30%;
+
+.decoracion-packet {
+    height: 35%;
+    width: 30%;
     background-color: rgb(135, 184, 201);
     border-bottom-left-radius: 15%;
     border-bottom-right-radius: 15%;
-    
+
 }
+
 /* Estilos para indicadores */
 #indicadores {
     margin-bottom: 20px;
@@ -81,32 +90,168 @@ body, html {
     opacity: 0.4;
 }
 
-#luz-verde { background-color: green; }
-#luz-naranja { background-color: orange; }
-#luz-roja { background-color: red; }
-#luz-gris { background-color: grey; }
+#luz-verde {
+    background-color: green;
+}
+
+#luz-naranja {
+    background-color: orange;
+}
+
+#luz-roja {
+    background-color: red;
+}
+
+#luz-gris {
+    background-color: grey;
+}
 
 /* Estilos para el ascensor y sus puertas */
-#ascensor {
-    border: 2px solid #333;
-    background-color: #777;
-    height: 200px;
-    width: 100px;
+.marco-ascensor {
+    border: 2px solid black;
+    background-color: #888;
+    height: 420px;
+    width: 240px;
     margin: auto;
     position: relative;
-    overflow: hidden; /* Esconde las puertas cuando se "abren" */
+    overflow: hidden;
+
+}
+
+.indicator {
+    position: absolute;
+    top: 3%;
+    width: 4%;
+    height: 2%;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+
+.activo {
+    background-color: yellow;
+}
+
+#indicator-floor-0 {
+    left: 32%;
+}
+
+#indicator-floor-1 {
+    left: 42%;
+}
+
+#indicator-floor-2 {
+    left: 52%;
+}
+
+#indicator-floor-3 {
+    left: 62%;
+}
+
+.boton-ascensor {
+    border-color: #333;
+    border-width: 1px;
+    position: absolute;
+    left: 3%;
+    top: 60%;
+    width: 5%;
+    height: 2.5%;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.ascensor {
+    border: 2px solid #333;
+    background-color: #368030;
+    opacity: 0.8;
+    background-image: linear-gradient(135deg, #d28c2e 25%, transparent 25%), linear-gradient(225deg, #d28c2e 25%, transparent 25%), linear-gradient(45deg, #d28c2e 25%, transparent 25%), linear-gradient(315deg, #d28c2e 25%, #368030 25%);
+    background-position: 13px 0, 13px 0, 0 0, 0 0;
+    background-size: 26px 26px;
+    background-repeat: repeat;
+    top: 9%;
+    bottom: 0;
+    height: 90%;
+    width: 78%;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    /* Esconde las puertas cuando se "abren" */
 }
 
 .puerta {
-    background-color: #333;
+    background-color: #9dafca;
+    border: 2px solid #333;
     height: 100%;
     width: 50%;
     position: absolute;
-    transition: transform 0.5s ease; /* Animación para abrir/cerrar */
+    top: 0;
+    transition: all 0.5s ease;
+    /* Animación para abrir/cerrar */
 }
 
-.puerta.izquierda { left: 0; }
-.puerta.derecha { right: 0; }
+.izquierda {
+    left: 0;
+}
+
+.derecha {
+    right: 0;
+}
+
+@keyframes abrirPuertaI {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes abrirPuertaD {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes cerrarPuertaI {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(-0%);
+    }
+}
+
+@keyframes cerrarPuertaD {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-0%);
+    }
+}
+
+
+.ascensor.abierto .izquierda {
+    animation: abrirPuertaI 1s ease forwards;
+}
+
+.ascensor.abierto .derecha {
+    animation: abrirPuertaD 1s ease forwards;
+}
+
+.ascensor.cerrado .izquierda {
+    animation: cerrarPuerta 1s ease forwards;
+}
+
+.ascensor.cerrado .derecha {
+    animation: cerrarPuerta 1s ease forwards;
+}
 
 /* Botones de piso */
 #controles {
@@ -143,19 +288,22 @@ body, html {
     flex-direction: column;
 }
 
-#formulario-paquete input, #formulario-paquete select, #formulario-paquete button {
+#formulario-paquete input,
+#formulario-paquete select,
+#formulario-paquete button {
     margin: 10px 0;
     padding: 10px;
 }
 
 /* Estilos responsivos para dispositivos móviles */
 @media (max-width: 768px) {
+
     #ascensor-container {
         width: 90%;
         padding: 10px;
     }
 
-    #ascensor {
+    .marco-ascensor {
         height: 150px;
         width: 80px;
     }
@@ -163,7 +311,31 @@ body, html {
     .puerta {
         transition: transform 0.5s ease;
     }
+
+    .indicator {
+        width: 6%;
+        height: 6%;
+    }
+
+    /* Adjust indicator positions for smaller screens */
+    #indicator-floor1 {
+        top: 8%;
+    }
+
+    #indicator-floor2 {
+        top: 36%;
+    }
+
+    #indicator-floor3 {
+        top: 65%;
+    }
+
+    #indicator-floor4 {
+        top: 95%;
+    }
 }
+
+
 
 #controles-externos {
     position: fixed;
@@ -181,7 +353,7 @@ body, html {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .boton-llamada:hover {
@@ -197,7 +369,7 @@ body, html {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
@@ -222,7 +394,8 @@ body, html {
     text-decoration: none;
     cursor: pointer;
 }
-#mostrarModalPaquetes{
+
+#mostrarModalPaquetes {
     padding: 10px 20px;
     background-color: red;
     color: white;

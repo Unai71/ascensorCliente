@@ -4,6 +4,7 @@ import Edificio from './edificio.js';
 import Paquete from './paquete.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const ascensor_dom = document.querySelector('#ascensor');
     const ascensor = new Ascensor();
     const controlAscensor = new ControlAscensor(ascensor);
     const edificio = new Edificio(ascensor);
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         boton.addEventListener('click', async function () {
             const pisoDestino = parseInt(this.dataset.piso);
             moverAscensor(pisoDestino);
-            if (ascensor.destinos.length >0){
+            if (ascensor.destinos.length > 0) {
                 procesarMovimiento();
             }
         });
@@ -29,47 +30,47 @@ document.addEventListener('DOMContentLoaded', () => {
         boton.addEventListener('click', async function () {
             const pisoDestino = parseInt(this.dataset.piso); //
             moverAscensor(pisoDestino);
-            if (ascensor.destinos.length >0){
+            if (ascensor.destinos.length > 0) {
                 procesarMovimiento();
             }
         });
     });
 
-    document.getElementById('mostrarModalPaquetes').addEventListener('click', function() {
-        if (ascensor.pisoActual === 0){ 
-        let interfaz = document.getElementById('modalPaquetes');
-        let listaAdministrarPaquetes = document.getElementById('listaModalPaquetes');
-        listaAdministrarPaquetes.innerHTML = '';
-        const paquetes = document.querySelectorAll('#paquetes-pendientes li, #lista-paquetes li');
+    document.getElementById('mostrarModalPaquetes').addEventListener('click', function () {
+        if (ascensor.pisoActual === 0) {
+            let interfaz = document.getElementById('modalPaquetes');
+            let listaAdministrarPaquetes = document.getElementById('listaModalPaquetes');
+            listaAdministrarPaquetes.innerHTML = '';
+            const paquetes = document.querySelectorAll('#paquetes-pendientes li, #lista-paquetes li');
 
-        paquetes.forEach(paquete => {
-            const li = document.createElement('li');
-            li.textContent = `ID: ${paquete.id}, Peso: ${paquete.dataset.peso}`;
-            listaModalPaquetes.appendChild(li);
-    
-            // Botón para eliminar paquete
-            const btnEliminar = document.createElement('button');
-            btnEliminar.textContent = 'Eliminar';
-            btnEliminar.onclick = function() {
-                paquete.remove();
-                li.remove(); 
-            };
-            li.appendChild(btnEliminar);
-        });
-        interfaz.style.display = 'block';
-        }else{
+            paquetes.forEach(paquete => {
+                const li = document.createElement('li');
+                li.textContent = `ID: ${paquete.id}, Peso: ${paquete.dataset.peso}`;
+                listaModalPaquetes.appendChild(li);
+
+                // Botón para eliminar paquete
+                const btnEliminar = document.createElement('button');
+                btnEliminar.textContent = 'Eliminar';
+                btnEliminar.onclick = function () {
+                    paquete.remove();
+                    li.remove();
+                };
+                li.appendChild(btnEliminar);
+            });
+            interfaz.style.display = 'block';
+        } else {
             alert("Baja al piso 0 para administrar los paquetes.");
         }
     });
-    
-    document.querySelector('.close').onclick = function() {
+
+    document.querySelector('.close').onclick = function () {
         document.getElementById('modalPaquetes').style.display = 'none';
     };
-    document.getElementById('cerrarModal').onclick = function() {
+    document.getElementById('cerrarModal').onclick = function () {
         document.getElementById('modalPaquetes').style.display = 'none';
     };
-    
-    window.onclick = function(event) {
+
+    window.onclick = function (event) {
         var modal = document.getElementById('modalPaquetes');
         if (event.target == modal) {
             modal.style.display = 'none';
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dimensionesInput = document.getElementById('dimensiones').value;
         const [ancho, alto] = dimensionesInput.split('x').map(Number);
         const destino = parseInt(document.getElementById('destino').value);
-        if (ancho >= 10 || alto >= 10 ){
+        if (ancho >= 10 || alto >= 10) {
             const paquete = new Paquete(peso, { ancho, alto }, destino);
 
             const listaPaquetes = document.getElementById('paquetes-pendientes');
@@ -95,11 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
             elementoPaquete.setAttribute('data-alto', alto);
             elementoPaquete.textContent = `Peso: ${peso} kg, Dimensiones: ${ancho}x${alto} cm, Destino: Piso ${destino}`;
             listaPaquetes.appendChild(elementoPaquete);
-    
+
             event.target.reset();
             mostrarPaquetesPB();
             actualizarEstadoAscensor();
-        }else{
+        } else {
             alert("Las dimensiones mínimas del paquete son de 10x10 cm.")
         }
 
@@ -135,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ascensor.anchoActual += anchoPaquete;
                 const elementoPaquete = paquete.cloneNode(true);
                 listaPaquetes.appendChild(elementoPaquete);
-                paquete.remove();
                 borrarPaquetePB();
+                paquete.remove();
             }
         });
     }
@@ -150,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Actualizar el piso actual del ascensor
         document.getElementById('piso-actual').textContent = `Piso Actual: ${ascensor.pisoActual}`;
+        actualizarIndicadores(ascensor.pisoActual);
 
         // Actualizar la carga actual dentro del ascensor
         document.getElementById('carga-actual').textContent = `Carga Actual: ${ascensor.cargaActual} kg`;
@@ -164,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             luz.classList.add('luz-inactiva');
             luz.classList.remove('luz-activa');
         });
-        
+
 
 
 
@@ -199,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-            
+
         } else {
             console.log("Piso destino inválido o ya en el piso destino.");
         }
@@ -209,37 +211,39 @@ document.addEventListener('DOMContentLoaded', () => {
         if (procesando) return;  // Asegurar que no se procese simultáneamente
         procesando = true;
         while (ascensor.destinos.length > 0) {
-                ascensor.espera = 0;
-                const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
-        
-                console.log("Cerrando puertas...");
-                ascensor.estadoPuertas = "cerradas";
-                actualizarEstadoAscensor(); 
-                console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
-        
-                // Esperar de manera asíncrona el tiempo necesario para moverse entre pisos
-                await new Promise(resolve => setTimeout(resolve, 3000 * Math.abs(ascensor.pisoActual - siguientePiso)));
-        
-                ascensor.pisoActual = siguientePiso;
-                console.log('Abriendo puertas...');
-                ascensor.estadoPuertas = "abiertas";
-                actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
-                console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
-        
-                await delay(4000); // Espera con las puertas abiertas
-        
-                descargarPaquete(ascensor.pisoActual); // Descargar paquetes, si hay alguno para este piso
-                actualizarEstadoAscensor(); // Actualiza la interfaz de usuario nuevamente
-                ascensor.espera = 1;
+            ascensor.espera = 0;
+            const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
+
+            console.log("Cerrando puertas...");
+            ascensor.estadoPuertas = "cerradas";
+            cerrarPuertas();
+            actualizarEstadoAscensor();
+            console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
+
+            // Esperar de manera asíncrona el tiempo necesario para moverse entre pisos
+            await new Promise(resolve => setTimeout(resolve, 3000 * Math.abs(ascensor.pisoActual - siguientePiso)));
+
+            ascensor.pisoActual = siguientePiso;
+            console.log('Abriendo puertas...');
+            ascensor.estadoPuertas = "abiertas";
+            abrirPuertas();
+            actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
+            console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
+
+            await delay(4000); // Espera con las puertas abiertas
+
+            descargarPaquete(ascensor.pisoActual); // Descargar paquetes, si hay alguno para este piso
+            actualizarEstadoAscensor(); // Actualiza la interfaz de usuario nuevamente
+            ascensor.espera = 1;
         }
         procesando = false;
     }
-    
+
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
     }
-    
-    
+
+
 
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
@@ -272,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             packet.className = "packet";
             numPaquetesPB += 1;
             packet.id = `packet-${numPaquetesPB}`;
+            console.log(`num paquetes en planta baja ${numPaquetesPB}`)
             packet.innerHTML = '<div class="decoracion-packet"></div>';
             //packet.style.width = width;
             //card.style.height = height;
@@ -279,17 +284,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         });
     }
-    
+
     function borrarPaquetePB() {
         const packetContainer = document.querySelectorAll("#packet-container > li[id^=packet-]");
-        console.log(`numero de paquetes en planta baja: ${numPaquetesPB}`);
+    
         packetContainer.forEach(packet => {
-            console.log(packet.id);
+            console.log(`eliminando el paquete ${packet.id}`);
             if (packet.id = `packet-${numPaquetesPB}`) {
                 packet.remove();
                 numPaquetesPB -= 1;
             }
         });
+    }
+    function abrirPuertas() {
+        ascensor_dom.classList.remove('cerrado');
+        ascensor_dom.classList.add('abierto')
+    }
+    function cerrarPuertas() {
+        ascensor_dom.classList.remove('abierto');
+        ascensor_dom.classList.add('cerrado')
+    }
+    function actualizarIndicadores(floor) {
+        // Reset all indicators
+        document.querySelectorAll('.indicator').forEach(indicator => {
+            indicator.classList.remove('activo');
+        });
+        // Light up indicators for current floor
+        document.getElementById(`indicator-floor-${floor}`).classList.add('activo');
+
     }
     // Implementaciones adicionales según sea necesario...
 });

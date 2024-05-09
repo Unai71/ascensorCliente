@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ascensor de Carga</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
+
 <body>
-    
+
     <div id="ascensor-container">
         <div id="indicadores">
-        <span id="piso-actual">Piso Actual: 0</span>
+            <span id="piso-actual">Piso Actual: 0</span>
             <span id="carga-actual">Carga Actual: 0kg</span>
             <span id="estado-puertas">Estado Puertas: Abiertas</span>
             <div id="luces">
@@ -20,13 +22,20 @@
                 <div id="luz-gris" class="luz"></div>
             </div>
         </div>
-        
+
         <div class="main-container">
             <div id="packet-container"></div>
-            <div id="ascensor">
-                <div id="puertas">
-                    <div class="puerta izquierda"></div>
-                    <div class="puerta derecha"></div>
+            <div class="marco-ascensor">
+                <div class="indicator" id="indicator-floor-0"></div>
+                <div class="indicator" id="indicator-floor-1"></div>
+                <div class="indicator" id="indicator-floor-2"></div>
+                <div class="indicator" id="indicator-floor-3"></div>
+                <div class="boton-ascensor"></div>
+                <div id="ascensor" class="ascensor abierto">
+                    <div id="puertas">
+                        <div class="puerta izquierda"></div>
+                        <div class="puerta derecha"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,7 +43,7 @@
             <button class="boton-piso" data-piso="0">PB</button>
             <button class="boton-piso" data-piso="1">1</button>
             <button class="boton-piso" data-piso="2">2</button>
-            <button class="boton-piso" data-piso="3">3</button>            
+            <button class="boton-piso" data-piso="3">3</button>
         </div>
         <div id="controles-externos">
             <button class="boton-llamada" data-piso="0">Llamar desde PB</button>
@@ -56,17 +65,17 @@
             <form id="añadir-paquete-form">
                 <label for="peso">Peso (kg):</label>
                 <input type="number" id="peso" name="peso" step="0.1" min="0" placeholder="Introduce el peso" required>
-                
+
                 <label for="dimensiones">Dimensiones (cm):</label>
                 <input type="text" id="dimensiones" name="dimensiones" placeholder="Ancho x Alto" required>
-                 
+
                 <label for="destino">Piso Destino:</label>
                 <select id="destino" name="destino">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                 </select>
-                
+
                 <button type="submit">Añadir Paquete</button>
             </form>
         </div>
@@ -89,4 +98,5 @@
     <script type="module" src="./js/edificio.js"></script>
     <script type="module" src="./js/paquete.js"></script>
 </body>
+
 </html>
