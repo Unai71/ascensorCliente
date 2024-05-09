@@ -150,7 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Actualizar el piso actual del ascensor
         document.getElementById('piso-actual').textContent = `Piso Actual: ${ascensor.pisoActual}`;
-
+        //Actualizamos los indicadores
+        actualizarIndicadores(ascensor.pisoActual);
         // Actualizar la carga actual dentro del ascensor
         document.getElementById('carga-actual').textContent = `Carga Actual: ${ascensor.cargaActual} kg`;
 
@@ -164,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
             luz.classList.add('luz-inactiva');
             luz.classList.remove('luz-activa');
         });
-        
 
 
 
@@ -213,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const siguientePiso = ascensor.destinos.shift(); // Obtiene y elimina el primer destino de la cola
         
                 console.log("Cerrando puertas...");
+                cerrarPuertas();
                 ascensor.estadoPuertas = "cerradas";
                 actualizarEstadoAscensor(); 
                 console.log(`Moviendo el ascensor al piso ${siguientePiso}...`);
@@ -222,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
                 ascensor.pisoActual = siguientePiso;
                 console.log('Abriendo puertas...');
+                abrirPuertas();
                 ascensor.estadoPuertas = "abiertas";
                 actualizarEstadoAscensor(); // Actualiza la interfaz de usuario con el nuevo estado del ascensor
                 console.log(`Ascensor ha llegado al piso ${ascensor.pisoActual}.`);
@@ -290,6 +292,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 numPaquetesPB -= 1;
             }
         });
+    }
+
+    function abrirPuertas() {
+        ascensor_dom.classList.remove('cerrado');
+        ascensor_dom.classList.add('abierto')
+    }
+    function cerrarPuertas() {
+        ascensor_dom.classList.remove('abierto');
+        ascensor_dom.classList.add('cerrado')
+    }
+    function actualizarIndicadores(floor) {
+        // Reset all indicators
+        document.querySelectorAll('.indicator').forEach(indicator => {
+            indicator.classList.remove('activo');
+        });
+        // Light up indicators for current floor
+        document.getElementById(`indicator-floor-${floor}`).classList.add('activo');
+
     }
     // Implementaciones adicionales según sea necesario...
 });
