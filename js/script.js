@@ -156,31 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Actualizar la carga actual dentro del ascensor
         document.getElementById('carga-actual').textContent = `Carga Actual: ${ascensor.cargaActual} kg`;
 
-        // Actualizar el estado de las puertas del ascensor
-        const estadoPuertasTexto = ascensor.estadoPuertas === "abiertas" ? "Abiertas" : "Cerradas";
-        document.getElementById('estado-puertas').textContent = `Estado de las Puertas: ${estadoPuertasTexto}`;
-
-        // Actualizar luces de estado basado en el estado del ascensor
-        // Por simplicidad, asumimos que las luces se manejan con clases CSS: .luz-activa, .luz-inactiva
-        document.querySelectorAll('.luz').forEach(luz => {
-            luz.classList.add('luz-inactiva');
-            luz.classList.remove('luz-activa');
-        });
+        
 
 
-
-
-
-        // Ejemplo de cómo podrías usar las luces para indicar el estado
-        if (ascensor.pisoActual === ascensor.destinoActual) {
-            document.getElementById('luz-verde').classList.add('luz-activa');
-            document.getElementById('luz-verde').classList.remove('luz-inactiva');
-        } else {
-            document.getElementById('luz-gris').classList.add('luz-activa');
-            document.getElementById('luz-gris').classList.remove('luz-inactiva');
-        }
-
-        // Aquí podrías expandir la lógica para manejar otros indicadores, como sobrecarga o llegada.
+// Aquí podrías expandir la lógica para manejar otros indicadores, como sobrecarga o llegada.
     }
 
     async function moverAscensor(pisoDestino) {
