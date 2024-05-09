@@ -231,6 +231,8 @@ body, html {
     padding: 20px;
     background-color: #ddd;
     border-radius: 10px;
+    max-width: 600px;
+    margin: 30px auto;
 }
 
 #formulario-paquete h3 {
