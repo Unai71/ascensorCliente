@@ -114,6 +114,18 @@ body, html {
 #indicator-floor-3 {
     left: 62%;
 }
+/* Estilos para el ascensor y sus puertas */
+.marco-ascensor {
+    border: 2px solid black;
+    background-color: #888;
+    height: 420px;
+    width: 240px;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+
+}
+
 
 .boton-ascensor {
     border-color: #333;
