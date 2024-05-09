@@ -31,6 +31,8 @@ html {
     /* Adjust as needed */
     gap: 5px;
     padding: 10px;
+    width: 50%;
+    max-width: 600px;
     justify-content: right;
     align-items: right;
     height: 200px;
@@ -105,24 +107,67 @@ html {
 }
 
 /* Estilos para el ascensor y sus puertas */
+.marco-ascensor {
+    border: 2px solid black;
+    background-color: #888;
+    height: 420px;
+    width: 240px;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+
+}
+
+.indicator {
+    position: absolute;
+    top:3%;
+    width: 4%;
+    height: 2%;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+.activo{
+    background-color: yellow;
+}
+#indicator-floor-1 {
+    left: 32%;
+}
+
+#indicator-floor-2 {
+    left: 42%;
+}
+
+#indicator-floor-3 {
+    left: 52%;
+}
+
+#indicator-floor-4 {
+    left: 62%;
+}
+
+.boton-ascensor{
+    border-color: #333;
+    border-width: 1px;
+    position:absolute;
+    left: 3%;
+    top:60%;
+    width: 5%;
+    height: 2.5%;
+    background-color: black;
+    border-radius: 50%;
+}
+
 .ascensor {
     border: 2px solid #333;
     background-color: #777;
-    height: 80%;
-    width: 40%;
-    max-height: 600px;
-    width: 300px;
+    top: 9%;
+    bottom: 0;
+    height: 90%;
+    width: 78%;
     margin: auto;
     position: relative;
     overflow: hidden;
     /* Esconde las puertas cuando se "abren" */
-}
-.marco{
-    position: relative;
-    width: 100%;
-    padding-top: 100%;
-    border: 2px solid black;
-    border-radius: 10px;
 }
 
 .puerta {
@@ -153,6 +198,7 @@ html {
         transform: translateX(-100%);
     }
 }
+
 @keyframes abrirPuertaD {
     0% {
         transform: translateX(0%);
@@ -165,37 +211,40 @@ html {
 
 @keyframes cerrarPuertaI {
     0% {
-      transform: translateX(-100%);
+        transform: translateX(-100%);
     }
-    100% {
-      transform: translateX(-0%);
-    }
-  }
-  @keyframes cerrarPuertaD {
-    0% {
-      transform: translateX(100%);
-    }
-    100% {
-      transform: translateX(-0%);
-    }
-  }
-  
 
-  .ascensor.abierto .izquierda {
+    100% {
+        transform: translateX(-0%);
+    }
+}
+
+@keyframes cerrarPuertaD {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-0%);
+    }
+}
+
+
+.ascensor.abierto .izquierda {
     animation: abrirPuertaI 1s ease forwards;
-  }
-  
-  .ascensor.abierto .derecha {
+}
+
+.ascensor.abierto .derecha {
     animation: abrirPuertaD 1s ease forwards;
-  }
-  
-  .ascensor.cerrado .izquierda {
+}
+
+.ascensor.cerrado .izquierda {
     animation: cerrarPuerta 1s ease forwards;
-  }
-  
-  .ascensor.cerrado .derecha {
+}
+
+.ascensor.cerrado .derecha {
     animation: cerrarPuerta 1s ease forwards;
-  }
+}
 
 /* Botones de piso */
 #controles {
@@ -241,12 +290,13 @@ html {
 
 /* Estilos responsivos para dispositivos móviles */
 @media (max-width: 768px) {
+
     #ascensor-container {
         width: 90%;
         padding: 10px;
     }
 
-    #ascensor {
+    .marco-ascensor {
         height: 150px;
         width: 80px;
     }
@@ -254,7 +304,31 @@ html {
     .puerta {
         transition: transform 0.5s ease;
     }
+
+    .indicator {
+        width: 6%;
+        height: 6%;
+    }
+
+    /* Adjust indicator positions for smaller screens */
+    #indicator-floor1 {
+        top: 8%;
+    }
+
+    #indicator-floor2 {
+        top: 36%;
+    }
+
+    #indicator-floor3 {
+        top: 65%;
+    }
+
+    #indicator-floor4 {
+        top: 95%;
+    }
 }
+
+
 
 #controles-externos {
     position: fixed;
