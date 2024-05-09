@@ -4,6 +4,7 @@ import Edificio from './edificio.js';
 import Paquete from './paquete.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const ascensor_dom = document.querySelector('#ascensor');
     const ascensor = new Ascensor();
     const controlAscensor = new ControlAscensor(ascensor);
     const edificio = new Edificio(ascensor);
