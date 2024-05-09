@@ -120,15 +120,17 @@ html {
 
 .indicator {
     position: absolute;
-    top:3%;
+    top: 3%;
     width: 4%;
     height: 2%;
     background-color: #ccc;
     border-radius: 50%;
 }
-.activo{
+
+.activo {
     background-color: yellow;
 }
+
 #indicator-floor-0 {
     left: 32%;
 }
@@ -145,12 +147,12 @@ html {
     left: 62%;
 }
 
-.boton-ascensor{
+.boton-ascensor {
     border-color: #333;
     border-width: 1px;
-    position:absolute;
+    position: absolute;
     left: 3%;
-    top:60%;
+    top: 60%;
     width: 5%;
     height: 2.5%;
     background-color: black;
@@ -159,7 +161,12 @@ html {
 
 .ascensor {
     border: 2px solid #333;
-    background-color: #777;
+    background-color: #368030;
+    opacity: 0.8;
+    background-image: linear-gradient(135deg, #d28c2e 25%, transparent 25%), linear-gradient(225deg, #d28c2e 25%, transparent 25%), linear-gradient(45deg, #d28c2e 25%, transparent 25%), linear-gradient(315deg, #d28c2e 25%, #368030 25%);
+    background-position: 13px 0, 13px 0, 0 0, 0 0;
+    background-size: 26px 26px;
+    background-repeat: repeat;
     top: 9%;
     bottom: 0;
     height: 90%;
