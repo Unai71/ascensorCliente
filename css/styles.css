@@ -60,32 +60,6 @@ body, html {
     margin: 10px 0;
 }
 
-/* Estilos para las luces */
-#luces {
-    display: flex;
-    justify-content: center;
-}
-
-.luz {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin: 0 5px;
-}
-
-.luz-activa {
-    opacity: 1;
-}
-
-.luz-inactiva {
-    opacity: 0.4;
-}
-
-#luz-verde { background-color: green; }
-#luz-naranja { background-color: orange; }
-#luz-roja { background-color: red; }
-#luz-gris { background-color: grey; }
-
 .indicator {
     position: absolute;
     top: 3%;
