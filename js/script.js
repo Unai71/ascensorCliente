@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('mostrarModalPaquetes').addEventListener('click', function() {
-        if (ascensor.pisoActual === 0){ 
+        if (ascensor.pisoActual === 0 && ascensor.estadoPuertas === "abiertas   "){ 
         let interfaz = document.getElementById('modalPaquetes');
         let listaAdministrarPaquetes = document.getElementById('listaModalPaquetes');
         listaAdministrarPaquetes.innerHTML = '';
